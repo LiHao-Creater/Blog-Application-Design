@@ -1,0 +1,6 @@
+Windows 11
+python 13.1
+Django>=6.0
+markdown
+bleach
+Pygments
