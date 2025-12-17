@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}写文章 - Blog{% endblock %}
+
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="h4 mb-3">写文章</h1>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label">标题</label>
+          {{ form.title }}
+          {% for e in form.title.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">正文（支持 Markdown）</label>
+          {{ form.text }}
+          {% for e in form.text.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">标签</label>
+          {{ form.tags }}
+          <div class="form-text">{{ form.tags.help_text }}</div>
+          {% for e in form.tags.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+        </div>
+
+        <div class="form-check mb-3">
+          {{ form.is_published }}
+          <label class="form-check-label">公开发布</label>
+        </div>
+
+        <button class="btn btn-primary" type="submit">保存</button>
+        <a class="btn btn-outline-secondary" href="{% url 'blogs:home' %}">取消</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - Blog{% endblock %}
+
+{% block content %}
+  <article class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="h3">{{ post.title }}</h1>
+
+      <div class="small text-body-secondary mb-3">
+        {{ post.date_added|date:"Y-m-d H:i" }} · {{ post.owner.username }}
+        · 阅读 {{ post.reading_time_minutes }} 分钟 · 字/词 {{ post.word_count }}
+      </div>
+
+      <div class="mb-3 d-flex flex-wrap gap-2">
+        {% for t in post.tags.all %}
+          <a class="badge text-bg-secondary text-decoration-none" href="{% url 'blogs:tag' t.slug %}">{{ t.name }}</a>
+        {% empty %}
+          <span class="text-body-secondary small">无标签</span>
+        {% endfor %}
+      </div>
+
+      <div class="post-content">
+        {{ post.html|safe }}
+      </div>
+
+      {% if user.is_authenticated and user.id == post.owner_id %}
+        <hr>
+        <div class="d-flex gap-2">
+          <a class="btn btn-outline-secondary" href="{% url 'blogs:edit' post.pk %}">编辑</a>
+          <a class="btn btn-outline-danger" href="{% url 'blogs:delete' post.pk %}">删除</a>
+        </div>
+      {% endif %}
+    </div>
+  </article>
+{% endblock %}

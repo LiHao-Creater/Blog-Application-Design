@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}删除文章 - Blog{% endblock %}
+
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="h5">确认删除？</h1>
+      <p class="text-body-secondary mb-3">《{{ object.title }}》将被永久删除。</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">确认删除</button>
+        <a class="btn btn-outline-secondary" href="{% url 'blogs:detail' object.pk %}">取消</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

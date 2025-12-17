@@ -1,0 +1,42 @@
+/* 全局：让“整页”跟主题变色，而不是只中间容器 */
+html[data-theme="light"] body {
+  background: #f6f7fb;
+  color: #111;
+}
+
+html[data-theme="dark"] body {
+  background: #0b1220;
+  color: #e6edf3;
+}
+
+/* 卡片在深色下更舒服 */
+html[data-theme="dark"] .card {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="dark"] .border-bottom,
+html[data-theme="dark"] .border-top {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* 文章内容排版 */
+.post-content {
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.post-content table {
+  width: 100%;
+}
+
+.post-content pre {
+  overflow-x: auto;
+  border-radius: 10px;
+  padding: 12px;
+}

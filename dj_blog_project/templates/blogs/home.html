@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
+    <div>
+      <h1 class="h3 mb-1">全部文章</h1>
+      {% if tag %}
+        <div class="text-body-secondary">
+          标签：<span class="badge text-bg-secondary">{{ tag.name }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <!-- ✅ 排序切换：保留 q 等参数，切换后回到第 1 页 -->
+      <div class="btn-group" role="group" aria-label="排序">
+        <a class="btn btn-outline-primary {% if order == 'new' %}active{% endif %}"
+           href="?{{ qs_no_order }}order=new">
+          最新
+        </a>
+        <a class="btn btn-outline-primary {% if order == 'old' %}active{% endif %}"
+           href="?{{ qs_no_order }}order=old">
+          最旧
+        </a>
+      </div>
+
+      <!-- 搜索：保留当前 order -->
+      <form class="d-flex gap-2" method="get" action="">
+        <input class="form-control" name="q" value="{{ q }}" placeholder="搜索标题/正文">
+        <input type="hidden" name="order" value="{{ order }}">
+        <button class="btn btn-outline-primary" type="submit">搜索</button>
+      </form>
+    </div>
+  </div>
+
+  {% for post in posts %}
+    <div class="card mb-3 shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-1">
+          <a class="text-decoration-none" href="{% url 'blogs:detail' post.pk %}">{{ post.title }}</a>
+        </h2>
+
+        <div class="small text-body-secondary mb-2">
+          {{ post.date_added|date:"Y-m-d H:i" }} · {{ post.owner.username }}
+          · 阅读 {{ post.reading_time_minutes }} 分钟 · 字/词 {{ post.word_count }}
+        </div>
+
+        <p class="mb-2">{{ post.excerpt }}</p>
+
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          {% for t in post.tags.all %}
+            <a class="badge text-bg-secondary text-decoration-none" href="{% url 'blogs:tag' t.slug %}">{{ t.name }}</a>
+          {% empty %}
+            <span class="text-body-secondary small">无标签</span>
+          {% endfor %}
+
+          <div class="ms-auto d-flex gap-2">
+            {% if user.is_authenticated and user.id == post.owner_id %}
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'blogs:edit' post.pk %}">编辑</a>
+              <a class="btn btn-sm btn-outline-danger" href="{% url 'blogs:delete' post.pk %}">删除</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="alert alert-info">暂无文章。</div>
+  {% endfor %}
+
+  {% if is_paginated %}
+    <nav class="mt-4">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?{{ qs_keep }}page={{ page_obj.previous_page_number }}">上一页</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">上一页</span></li>
+        {% endif %}
+
+        <li class="page-item disabled">
+          <span class="page-link">第 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} 页</span>
+        </li>
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?{{ qs_keep }}page={{ page_obj.next_page_number }}">下一页</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">下一页</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+{% endblock %}
