@@ -1,6 +1,6 @@
 # Blog-Application-Design
 
-一个基于 **Django** 的多用户博客系统原型（research-grade course project / engineering prototype）。系统围绕“**内容生产—组织—检索—分发**”的闭环，提供用户认证、文章发布与草稿管理、标签体系、搜索+排序+分页的组合查询、Markdown（含代码高亮）渲染与安全清洗、RSS 输出，以及深色/浅色主题切换等能力。
+一个基于 **Django** 的多用户博客系统原型。系统围绕“**内容生产—组织—检索—分发**”的闭环，提供用户认证、文章发布与草稿管理、标签体系、搜索+排序+分页的组合查询、Markdown（含代码高亮）渲染与安全清洗、RSS 输出，以及深色/浅色主题切换等能力。
 
 从研究视角，本项目更关注两个常被弱化的问题：  
 1) **内容渲染的安全边界（Security Boundary for User-Generated Content）**：将 Markdown 视为不可信输入，采用“渲染 → 白名单清洗 → 安全输出”的可审计流水线，降低 XSS 等前端攻击面。  
